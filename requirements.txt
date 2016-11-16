@@ -1,0 +1,12 @@
+ad3>=2.0.2
+matplotlib>=1.5.3
+nose>=1.3.7
+numpy>=1.11.1
+pystruct>=0.2.4
+scikit-image>=0.12.3
+scikit-learn>=0.18
+scipy>=0.18.0
+h5py>=2.6.0
+#tensorflow>=0.11.0rc2
+Theano>=0.9.0.dev2
+keras>=1.1.0
