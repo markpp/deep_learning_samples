@@ -5,18 +5,14 @@
 
 Install and update essential system tools
 ```bash
-sudo apt-get update  
-sudo apt-get upgrade  
-sudo apt-get install
-
-sudo apt-get update && apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py python-skimage python-matplotlib python-pandas python-sklearn python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev libatlas3gf-base
+sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py python-skimage python-matplotlib python-pandas python-sklearn python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev
 ```
 
 ## Installing cuda 8.0 Ubuntu ##
 
 https://github.com/saiprashanths/dl-setup
 
-nvidia driver
+Don't install the nvidia driver by it self. Installing CUDA takes care of all you need
 ```bash
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt-get update
@@ -55,8 +51,11 @@ sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
 
 # Python
 ```bash
+pip install --upgrade pip
 pip install pillow
-pip install h5py
+
+sudo pip install pystruct
+pip install --user pyqpbo
 ```
 
 
@@ -90,3 +89,6 @@ nano ~/.keras/keras.json
 
 # OpenCV
 http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
+```bash
+sudo apt-get install libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran python2.7-dev python3.5-dev
+```
