@@ -5,7 +5,9 @@
 
 Install and update essential system tools
 ```bash
-sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py python-skimage python-matplotlib python-pandas python-sklearn python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev
+sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py  python-matplotlib python-pandas python-sklearn python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev
+
+python-skimage
 ```
 
 ## Installing cuda 8.0 Ubuntu ##
@@ -53,6 +55,7 @@ sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
 ```bash
 pip install --upgrade pip
 pip install pillow
+sudo pip install scikit-image
 
 sudo pip install pystruct
 pip install --user pyqpbo
