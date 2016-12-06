@@ -9,6 +9,7 @@ http://machinelearningmastery.com/create-algorithm-test-harness-scratch-python/
 
 ## Tools ##
 Web service: [Online live supervision of training process](http://aetros.com/)
+http://machinelearningmastery.com/machine-learning-performance-improvement-cheat-sheet/
 
 http://machinelearningmastery.com/improve-deep-learning-performance/
 http://machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/
@@ -87,3 +88,15 @@ model.add(MaxPooling2D((2,2), strides=(2,2)))           #30
 
 
 ## TODO ##
+
+
+## Installing cuda 8.0 Ubuntu ##
+
+https://github.com/saiprashanths/dl-setup
+
+nvidia driver
+```bash
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-370
+```
