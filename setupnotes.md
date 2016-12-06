@@ -107,4 +107,27 @@ I use this configuration
 http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
 ```bash
 sudo apt-get install libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran python2.7-dev python3.5-dev
+
+git clone https://github.com/    .git
+
+cd opencv/
+mkdir release
+cd release/
+cmake -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+
+sudo make -j7 install
+```
+
+# PCL
+
+```bash
+sudo apt-get install libeigen3-dev libvtk5-dev libusb-dev libgtest-dev git-core freeglut3-dev pkg-config libxmu-dev libxi-dev libusb-1.0-0-dev graphviz mono-complete qt-sdk cmake-gui mpi-default-dev openmpi-bin openmpi-common libflann-dev libboost-all-dev
+
+git clone https://github.com/PointCloudLibrary/pcl.git
+
+cd pcl/
+mkdir release
+cd release/
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON ..
+sudo make -j7 install
 ```
