@@ -5,9 +5,10 @@
 
 Install and update essential system tools
 ```bash
-sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py  python-matplotlib python-pandas python-sklearn python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev
+sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential cmake g++ gfortran git pkg-config software-properties-common wget python-dev python-pip python-numpy python-scipy python-nose python-h5py python-matplotlib python-pandas python-sympy python-pygments python-sphinx python-setuptools python-cvxopt libatlas-dev
 
-python-skimage
+Install these using pip to get the newest versions
+python-skimage python-sklearn
 ```
 
 ## Installing cuda 8.0 Ubuntu ##
@@ -56,6 +57,7 @@ sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
 pip install --upgrade pip
 pip install pillow
 sudo pip install scikit-image
+sudo pip install scikit-learn
 
 sudo pip install pystruct
 pip install --user pyqpbo
@@ -88,6 +90,17 @@ sudo pip install keras
 Configure keras
 ```bash
 nano ~/.keras/keras.json
+
+I use this configuration
+
+{
+    "image_dim_ordering": "th", 
+    "epsilon": 1e-07, 
+    "floatx": "float32", 
+    "backend": "theano"
+}
+
+
 ```
 
 # OpenCV
