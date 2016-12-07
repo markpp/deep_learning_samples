@@ -58,6 +58,7 @@ pip install --upgrade pip
 pip install pillow
 sudo pip install scikit-image
 sudo pip install scikit-learn
+sudo pip install cython
 
 sudo pip install pystruct
 pip install --user pyqpbo
