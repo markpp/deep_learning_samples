@@ -11,7 +11,7 @@ sudo apt-get install python-dev python2.7-dev python3.5-dev python-pip python-nu
 ```
 
 In some cases, the python tools are not availble in newest versions from apt-get, then use pip instead. An exampel would be:
-python-skimage. If python-skimage was installed using apt-get, you can do as follows to get a more recent version:
+python-skimage. If an outdated version of python-skimage was installed using apt-get, just use pip to get a more recent version:
 ```bash
 sudo pip uninstall scikit-image
 sudo pip install scikit-image
@@ -26,7 +26,7 @@ sudo pip install scikit-image
 sudo pip install scikit-learn
 sudo pip install cython
 sudo pip install pystruct
-sudo pip install --user pyqpbo
+sudo pip install pyqpbo
 ```
 
 # OpenCV
