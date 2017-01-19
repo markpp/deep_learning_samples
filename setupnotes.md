@@ -6,7 +6,7 @@ If you wish to use an Nvidia GPU, go to the buttom of the guide and begin with t
 Install and update essential system tools
 ```bash
 sudo apt-get update && sudo apt-get upgrade
-sudo apt-get install build-essential cmake cmake-gui g++ gfortran git pkg-config software-properties-common wget libatlas-dev libatlas-base-dev 
+sudo apt-get install build-essential cmake cmake-gui g++ gfortran git pkg-config software-properties-common wget libatlas-dev libatlas-base-dev
 sudo apt-get install python-dev python2.7-dev python3.5-dev python-pip python-numpy python-scipy python-nose python-h5py python-matplotlib python-pandas python-sympy python-pygments python-sphinx python-setuptools python-cvxopt
 ```
 
@@ -87,6 +87,15 @@ Python example:
 os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
 ```
 
+
+(note) Increase performance slightly by reserving memory:
+add the following lines to .theanorc in home dir
+```bash
+[lib]
+cnmem=.75
+```
+
+
 # Keras
 [ref](http://www.pyimagesearch.com/2016/11/14/installing-keras-with-tensorflow-backend/)
 ```bash
@@ -97,9 +106,9 @@ Configure keras to use Theano backend instead of Tensorflow
 ```bash
 nano ~/.keras/keras.json
 {
-    "image_dim_ordering": "th", 
-    "epsilon": 1e-07, 
-    "floatx": "float32", 
+    "image_dim_ordering": "th",
+    "epsilon": 1e-07,
+    "floatx": "float32",
     "backend": "theano"
 }
 ```

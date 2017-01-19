@@ -5,7 +5,7 @@ This repository contains small programs and code collection that can be of use w
 
 ## Usage ##
 
-- Clone this repo: `git clone https://bitbucket.org/aauvap/pclchickenorgansegmentation`
+- Clone this repo: `https://github.com/markpp/deep_learning_samples.git`
 
 **Python samples**
 
