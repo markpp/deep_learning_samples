@@ -7,20 +7,28 @@ from vgg16 import CNN
 
 def train_top():
     cnn = CNN()
-    cnn.save_bottlebeck_features()
+    #cnn.save_bottlebeck_features()
     cnn.train_top_model()
 
-
+def finetune_top():
+    cnn = CNN()
+    #cnn.save_bottlebeck_features()
+    cnn.fine_tune()
 
 def predict(path):
-    cnn = CNN('weights/small_cnn.h5')
+    cnn = CNN()
+    #model = cnn.load_weights()
+    model = cnn.fine_tune()
 
     for filename in os.listdir(path):
         name, file_extension = filename[:].split('.')
         if file_extension == 'png' or file_extension == 'Png' or file_extension == 'jpg' or file_extension == 'Jpeg':
-            print filename
+            print(filename)
             img = cv2.resize(cv2.imread(path+filename), (224, 224)).astype(np.float32)
-            cnn.predict(img)
+            img = img.transpose((2, 0, 1))
+            img = np.expand_dims(img, axis=0)
+            out = model.predict(img)
+            print('predicted label: {}, probs: {}'.format(np.argmax(out), out))
 
 
 if __name__ == "__main__":
@@ -31,4 +39,4 @@ if __name__ == "__main__":
     #finetune_top()
 
     #
-    # predict('../../data/')
+    #predict('../../data/')

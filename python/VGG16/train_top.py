@@ -15,8 +15,8 @@ top_model_weights_path = 'fc_model.h5'
 # dimensions of our images.
 img_width, img_height = 224, 224
 
-train_data_dir = '../../../data/medium_vicera_dataset/training'
-validation_data_dir = '../../../data/medium_vicera_dataset/validation'
+train_data_dir = 'C:/Users/maph/Documents/github/black_border_224/training'
+validation_data_dir = 'C:/Users/maph/Documents/github/black_border_224/validation'
 nb_train_samples = 3600
 nb_validation_samples = 400
 nb_epoch = 50
@@ -106,6 +106,7 @@ def train_top_model():
     validation_data = np.load(open('bottleneck_features_validation.npy'))
     validation_labels = np.array([0] * (nb_validation_samples / 2) + [1] * (nb_validation_samples / 2))
 
+    '''
     model = Sequential()
     model.add(Convolution2D(4096,7,7,activation="relu",name="dense_1"))
     model.add(Convolution2D(4096,1,1,activation="relu",name="dense_2"))
@@ -114,6 +115,15 @@ def train_top_model():
 
     sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='mse')
+    '''
+
+    model = Sequential()
+    model.add(Flatten(input_shape=train_data.shape[1:]))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(1, activation='sigmoid'))
+
+    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
 
     model.fit(train_data, train_labels,
               nb_epoch=nb_epoch, batch_size=32,
