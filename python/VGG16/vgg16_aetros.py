@@ -92,8 +92,8 @@ def vgg_std16_model(config):
 
     # Truncate and replace softmax layer for transfer learning
     model.layers.pop()
-    #model.outputs = [model.layers[-1].output]
-    #model.layers[-1].outbound_nodes = []
+    model.outputs = [model.layers[-1].output]
+    model.layers[-1].outbound_nodes = []
     model.add(Dense(config['n_class'], activation='softmax'))
 
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
@@ -107,7 +107,7 @@ def vgg_std16_model(config):
     return model
 
 if __name__ == '__main__':
-    config_file = '../../config/rog_setup.json'
+    config_file = '../../config/rog_setup_organs.json'
     config = json.load(open(config_file))
 
     model = vgg_std16_model(config)
