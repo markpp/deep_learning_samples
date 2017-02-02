@@ -30,51 +30,57 @@ def vgg_std16_model(img_rows, img_cols, channel=1, num_class=None):
       channel - 1 for grayscale, 3 for color
       num_class - number of class labels for our classification task
     """
+    feature_layers = [
+        ZeroPadding2D((1, 1), input_shape=(channel, img_rows, img_cols)),
+        Convolution2D(64, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(64, 3, 3, activation='relu'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        ZeroPadding2D((1, 1)),
+        Convolution2D(128, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(128, 3, 3, activation='relu'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        ZeroPadding2D((1, 1)),
+        Convolution2D(256, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(256, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(256, 3, 3, activation='relu'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        MaxPooling2D((2, 2), strides=(2, 2)),
+
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        ZeroPadding2D((1, 1)),
+        Convolution2D(512, 3, 3, activation='relu'),
+        MaxPooling2D((2, 2), strides=(2, 2))
+    ]
+    classification_layers = [
+        Flatten(),
+        Dense(4096, activation='relu'),
+        Dropout(0.5),
+        Dense(4096, activation='relu'),
+        Dropout(0.5),
+        Dense(1000, activation='softmax')
+    ]
+
     model = Sequential()
-    model.add(ZeroPadding2D((1, 1), input_shape=(channel, img_rows, img_cols)))
-    model.add(Convolution2D(64, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(64, 3, 3, activation='relu'))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation='relu'))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-
-    # Add Fully Connected Layer
-    model.add(Flatten())
-    model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(1000, activation='softmax'))
-
+    for l in feature_layers + classification_layers:
+        model.add(l)
+    for l in feature_layers:
+        l.trainable = False
     # Loads ImageNet pre-trained data
     model.load_weights('C:/Users/maph/Documents/github/models/full/vgg16_weights.h5')
 
@@ -85,8 +91,8 @@ def vgg_std16_model(img_rows, img_cols, channel=1, num_class=None):
     model.add(Dense(num_class, activation='softmax'))
 
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
-    for layer in model.layers[:10]:
-        layer.trainable = False
+    #for layer in model.layers[:10]:
+    #    layer.trainable = False
 
     # Learning rate is changed to 0.001
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
@@ -99,13 +105,46 @@ if __name__ == '__main__':
     # Fine-tune Example
     img_rows, img_cols = 224, 224 # Resolution of inputs
     channel = 3
-    num_class = 4
+    num_class = 2
     batch_size = 32
     nb_epoch = 30
 
+    train_data_dir = 'data/train'
+    validation_data_dir = 'data/validation'
+    nb_train_samples = 2000
+    nb_validation_samples = 800
     # Load our model
     model = vgg_std16_model(img_rows, img_cols, channel, num_class)
 
+    # prepare data augmentation configuration
+    train_datagen = ImageDataGenerator(
+        rescale=1./255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+    test_datagen = ImageDataGenerator(rescale=1./255)
+
+    train_generator = train_datagen.flow_from_directory(
+        train_data_dir,
+        target_size=(img_height, img_width),
+        batch_size=32,
+        class_mode='binary')
+
+    validation_generator = test_datagen.flow_from_directory(
+        validation_data_dir,
+        target_size=(img_height, img_width),
+        batch_size=32,
+        class_mode='binary')
+
+    # fine-tune the model
+    model.fit_generator(
+        train_generator,
+        samples_per_epoch=nb_train_samples,
+        nb_epoch=nb_epoch,
+        validation_data=validation_generator,
+        nb_val_samples=nb_validation_samples)
+    '''
     train_datagen = ImageDataGenerator(
         rescale=1./255,
         shear_range=0.2,
@@ -132,3 +171,4 @@ if __name__ == '__main__':
               validation_data=validation_generator,
               nb_val_samples=32*3*4
               )
+    '''
