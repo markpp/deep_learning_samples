@@ -94,7 +94,7 @@ def vgg_std16_model(config):
     model.layers.pop()
     model.outputs = [model.layers[-1].output]
     model.layers[-1].outbound_nodes = []
-    model.add(Dense(config['n_class'], activation='softmax'))
+    model.add(Dense(config['n_class'], activation='softmax', name="dense_3"))
 
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
     #for layer in model.layers[:10]:

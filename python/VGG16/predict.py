@@ -137,7 +137,7 @@ def VGG_16_top(weights_path):
     return model
 
 if __name__ == "__main__":
-    im = cv2.resize(cv2.imread('../test/s1.png'), (224, 224)).astype(np.float32)
+    im = cv2.resize(cv2.imread('../../data/s1.png'), (224, 224)).astype(np.float32)
     im[:,:,0] -= 103.939
     im[:,:,1] -= 116.779
     im[:,:,2] -= 123.68
@@ -146,9 +146,15 @@ if __name__ == "__main__":
 
     # Test pretrained model
     #model = VGG_16_top('finetuned_weights.h5')
-    model = VGG_16('../../../models/full/vgg16_weights.h5')
+    model = VGG_16('../../models/pre_vgg16_weights.h5')
 
     sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy')
+
+    #model.save_weights("output_weight_path.h5")
+
+    #model_json = model.to_json()
+    #with open("output_model_path.json", "w") as json_file:
+    #    json_file.write(model_json)
     out = model.predict(im)
     print np.argmax(out)

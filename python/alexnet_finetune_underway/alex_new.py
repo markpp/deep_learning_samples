@@ -30,7 +30,7 @@ def alex_model(config):
     return model
 
 if __name__ == '__main__':
-    config_file = '../../config/mac_alex_setup_organs.json'
+    config_file = '../../config/rog_alex_setup_organs.json'
     config = json.load(open(config_file))
 
     model = alex_model(config)

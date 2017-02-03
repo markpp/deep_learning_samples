@@ -1,0 +1,18 @@
+{
+  "debug":0,
+  "gpu":1,
+  "train_dir": "/home/vap/Desktop/datasets/black_border_224/training",
+  "val_dir": "/home/vap/Desktop/datasets/black_border_224/validation",
+  "n_rows":227,
+  "n_cols":227,
+  "n_channel":3,
+  "n_class":4,
+  "n_epoch":30,
+  "batch_size":64,
+  "n_train_samples":1024,
+  "n_validation_samples":384,
+  "pre_weight_path":"/home/vap/Documents/github/deep_learning_samples/models/alexnet_weights.h5",
+  "output_weight_path":"/home/vap/Documents/github/deep_learning_samples/models/post_alexnet_weights.h5",
+  "output_model_path":"/home/vap/Documents/github/deep_learning_samples/models/alexnet_model.json"
+}
+
