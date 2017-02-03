@@ -1,0 +1,17 @@
+{
+  "debug":0,
+  "gpu":1,
+  "train_dir": "/home/vap/Documents/data/dog_cat_small/training",
+  "val_dir": "/home/vap/Documents/data/dog_cat_small/validation",
+  "n_rows":224,
+  "n_cols":224,
+  "n_channel":3,
+  "n_class":2,
+  "n_epoch":30,
+  "batch_size":32,
+  "n_train_samples":2000,
+  "n_validation_samples":800,
+  "pre_weight_path":"/home/vap/Documents/github/deep_learning_samples/models/pre_vgg16_weights.h5",
+  "output_weight_path":"/home/vap/Documents/github/deep_learning_samples/models/post_vgg16_weights.h5",
+  "output_model_path":"/home/vap/Documents/github/deep_learning_samples/models/vgg16_model.json"
+}
