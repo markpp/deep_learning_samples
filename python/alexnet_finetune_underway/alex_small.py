@@ -1,6 +1,6 @@
 from keras.optimizers import SGD
 from keras.models import Model
-from keras.layers import Dense, Input, Activation
+from keras.layers import Dense, Input, Activation, Flatten, Dropout
 from convnetskeras.convnets import convnet
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -11,18 +11,29 @@ def alex_model(config):
     alexnet = convnet('alexnet', weights_path=config['pre_weight_path'])
 
     input = alexnet.input
-    img_representation = alexnet.get_layer("dense_2").output
-
+    img_representation = alexnet.get_layer("flatten").output
+    print img_representation
     #dense_3 = Dropout(0.5)(dense_2)
     #dense_3 = Dense(1000,name='dense_3')(dense_3)
     #prediction = Activation("softmax",name="softmax")(dense_3)
-    classifier = Dense(4,name='dense_3')(img_representation)
+    #classifier = Flatten(name="flatten")(img_representation)
+    classifier = Dense(4096, activation="relu",name='dense_1')(img_representation)
+    classifier = Dropout(0.5)(classifier)
+    classifier = Dense(4096, activation="relu", name='dense_2')(classifier)
+    classifier = Dropout(0.5)(classifier)
+    classifier = Dense(4,name='dense_3')(classifier)
     classifier = Activation("softmax", name="softmax")(classifier)
     model = Model(input=input,output=classifier)
 
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
-    for layer in model.layers[:14]:
-        layer.trainable = False
+    print("Number of Layers: {}".format(len(model.layers)))
+    for idx, layer in enumerate(model.layers):
+	if idx < 26:
+            layer.trainable = False
+        else:
+            print("Layer {} - {} is trainable".format(idx, layer.get_config))
+            print("input shape {}".format(layer.input_shape))
+            print("output shape {}".format(layer.output_shape))
 
     sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy',metrics=["accuracy"])
@@ -30,7 +41,7 @@ def alex_model(config):
     return model
 
 if __name__ == '__main__':
-    config_file = '../../config/rog_alex_setup_organs.json'
+    config_file = '../../config/rog_alex_setup_organs_small.json'
     config = json.load(open(config_file))
 
     model = alex_model(config)
