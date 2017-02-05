@@ -12,7 +12,7 @@ def alex_model(config):
 
     input = alexnet.input
     img_representation = alexnet.get_layer("flatten").output
-    print img_representation
+    #print img_representation
     #dense_3 = Dropout(0.5)(dense_2)
     #dense_3 = Dense(1000,name='dense_3')(dense_3)
     #prediction = Activation("softmax",name="softmax")(dense_3)
@@ -28,7 +28,7 @@ def alex_model(config):
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
     print("Number of Layers: {}".format(len(model.layers)))
     for idx, layer in enumerate(model.layers):
-	if idx < 26:
+	if idx < 28:
             layer.trainable = False
         else:
             print("Layer {} - {} is trainable".format(idx, layer.get_config))
