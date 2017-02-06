@@ -43,7 +43,7 @@ def predict(config):
     
     new_model = to_heatmap(loaded_model)
 
-    img = image.load_img('../../data/3.png', target_size=(350*4, 150*4))
+    img = image.load_img('../../data/2.png', target_size=(350*2, 150*2))
     #im = preprocess_image_batch(['examples/3.png'], color_mode="bgr") 
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
@@ -51,13 +51,11 @@ def predict(config):
 
     out = new_model.predict(x)
 
-    heatmap_all = out[0,[0,1,2,3]].sum(axis=0)
     heatmap0 = out[0,0]
     heatmap1 = out[0,1]
     heatmap2 = out[0,2]
     heatmap3 = out[0,3]
 
-    plt.imsave("../../data/heatmap_all.png",heatmap_all)
     plt.imsave("../../data/heatmap0.png",heatmap0)
     plt.imsave("../../data/heatmap1.png",heatmap1)
     plt.imsave("../../data/heatmap2.png",heatmap2)
@@ -103,12 +101,13 @@ def train(config, model):
 def load_custom_vgg16(config):
     #https://github.com/fchollet/keras/issues/4465
     #Get back the convolutional part of a VGG network trained on ImageNet
-    model_vgg16 = VGG16(weights='imagenet', include_top=True)
-    model_json = model_vgg16.to_json()
-    with open('vgg16.json', "w") as json_file:
-        json_file.write(model_json)
+    #model_vgg16 = VGG16(weights='imagenet', include_top=True)
 
-    model_vgg16_conv = VGG16(weights='imagenet', include_top=False)
+    #model_json = model_vgg16.to_json()
+    #with open('vgg16.json', "w") as json_file:
+    #    json_file.write(model_json)
+
+    model_vgg16_conv = VGG16(weights='imagenet', include_top=False, input_shape=(config['n_channel'], config['n_rows'], config['n_cols']))
 
     #print("Number of Layers: {}".format(len(model_vgg16_conv.layers)))
     for layer in model_vgg16_conv.layers:
@@ -120,21 +119,33 @@ def load_custom_vgg16(config):
 
     model_vgg16_conv.summary()
 
-    #Create your own input format (here 3x200x200)
-    input = Input(shape=(config['n_channel'], config['n_rows'], config['n_cols']),name = 'image_input')
 
+    #alexnet = convnet('alexnet', weights_path=config['pre_weight_path'])
+    #input = alexnet.input
+    #img_representation = alexnet.get_layer("dense_2").output
+
+    #classifier = Dense(4,name='dense_3')(img_representation)
+    #classifier = Activation("softmax", name="softmax")(classifier)
+    #model = Model(input=input,output=classifier)
+
+
+    #Create your own input format (here 3x200x200)
+    #input = Input(shape=(config['n_channel'], config['n_rows'], config['n_cols']),name = 'input_1')
+    input = model_vgg16_conv.input
+
+    output_vgg16_conv = model_vgg16_conv.get_layer("block5_pool").output
+    
     #Use the generated model 
-    output_vgg16_conv = model_vgg16_conv(input)
+    #output_vgg16_conv = model_vgg16_conv(input)
 
     #Add the fully-connected layers 
     x = Flatten(name='flatten')(output_vgg16_conv)
-    x = Dense(4096, activation='relu', name='fc1')(x)
-    x = Dense(4096, activation='relu', name='fc2')(x)
+    x = Dense(4096/2, activation='relu', name='fc1')(x)
+    x = Dense(4096/2, activation='relu', name='fc2')(x)
     x = Dense(4, activation='softmax', name='predictions')(x)
 
     #Create your own model 
     my_model = Model(input=input, output=x)
-   
 
     #In the summary, weights and layers from VGG part will be hidden, but they will be fit during the training
     my_model.summary()

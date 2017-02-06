@@ -13,9 +13,6 @@ def alex_model(config):
     input = alexnet.input
     img_representation = alexnet.get_layer("dense_2").output
 
-    #dense_3 = Dropout(0.5)(dense_2)
-    #dense_3 = Dense(1000,name='dense_3')(dense_3)
-    #prediction = Activation("softmax",name="softmax")(dense_3)
     classifier = Dense(4,name='dense_3')(img_representation)
     classifier = Activation("softmax", name="softmax")(classifier)
     model = Model(input=input,output=classifier)
