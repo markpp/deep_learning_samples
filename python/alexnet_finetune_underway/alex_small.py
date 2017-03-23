@@ -17,18 +17,18 @@ def alex_model(config):
     #dense_3 = Dense(1000,name='dense_3')(dense_3)
     #prediction = Activation("softmax",name="softmax")(dense_3)
     #classifier = Flatten(name="flatten")(img_representation)
-    classifier = Dense(4096/2, activation="relu",name='dense_1')(img_representation)
+    classifier = Dense(4096, activation="relu",name='dense_1')(img_representation)
     classifier = Dropout(0.5)(classifier)
-    classifier = Dense(4096/2, activation="relu", name='dense_2')(classifier)
+    classifier = Dense(4096, activation="relu", name='dense_2')(classifier)
     classifier = Dropout(0.5)(classifier)
-    classifier = Dense(4,name='dense_3')(classifier)
+    classifier = Dense(5,name='dense_3')(classifier)
     classifier = Activation("softmax", name="softmax")(classifier)
     model = Model(input=input,output=classifier)
 
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
     print("Number of Layers: {}".format(len(model.layers)))
     for idx, layer in enumerate(model.layers):
-	if idx < 28:
+        if idx < 28:
             layer.trainable = False
         else:
             print("Layer {} - {} is trainable".format(idx, layer.get_config))
@@ -41,7 +41,7 @@ def alex_model(config):
     return model
 
 if __name__ == '__main__':
-    config_file = '../../config/rog_alex_setup_organs_small.json'
+    config_file = '../../config/p50_alex_setup_organs_small.json'
     config = json.load(open(config_file))
 
     model = alex_model(config)
@@ -69,13 +69,17 @@ if __name__ == '__main__':
 
     #KerasIntegration('markpp/test1', 'f7560908f0a18d5aa14c0583bc1a2f89', model, insights = True )
 
+    class_weights = {0:1/(config['n_empty']/config['n_train_samples']), 1:1/(config['n_heart']/config['n_train_samples']), 2:1/(config['n_liver']/config['n_train_samples']), 3:1/(config['n_lung']/config['n_train_samples']), 4:1/(config['n_misc']/config['n_train_samples'])}
+    print("class_weights: heart : liver : lung : misc : empty")
+    print(class_weights)
     # fine-tune the model
     model.fit_generator(
         train_generator,
         samples_per_epoch=config['n_train_samples'],
         nb_epoch=config['n_epoch'],
         validation_data=validation_generator,
-        nb_val_samples=config['n_validation_samples'])
+        nb_val_samples=config['n_validation_samples'],
+        class_weight=class_weights)
 
     model.save_weights(config['output_weight_path'])
 
