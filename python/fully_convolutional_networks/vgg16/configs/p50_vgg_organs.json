@@ -16,7 +16,7 @@
   "n_empty":992,
   "n_train_samples":3136,
   "n_validation_samples":640,
-  "pre_weight_path":"/Users/maph/Documents/github/deep_learning_samples/weights/vgg_weights.h5",
+  "pre_weight_path":"/Users/maph/Documents/github/deep_learning_samples/weights/vgg16_weights.h5",
   "output_weight_path":"/Users/maph/Documents/github/deep_learning_samples/weights/tuned_vgg_weights.h5",
   "output_model_path":"/Users/maph/Documents/github/deep_learning_samples/models/vgg_model.json"
 }

@@ -51,5 +51,5 @@ def predict(config_path, img_path):
 
 if __name__ == "__main__":
     config_path = 'configs/p50_vgg_organs.json'
-    train(config_path)
+    #train(config_path)
     predict(config_path, '../input/')

@@ -27,7 +27,7 @@ def load_model(config):
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
     print("Number of Layers: {}".format(len(model.layers)))
     for idx, layer in enumerate(model.layers):
-        if idx < 18:
+        if idx < 34:
             layer.trainable = False
         else:
             print("Layer {} is trainable".format(idx))
