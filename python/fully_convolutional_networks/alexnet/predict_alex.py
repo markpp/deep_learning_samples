@@ -9,6 +9,7 @@ class fcn_alex:
         self.img_width, self.img_height = 64, 64  # dimensions of our images.
         self.out_width, self.out_height = 150, 350  # dimensions of our images.
         sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+        print("loading alexnet weights from: {}".format(weights_path))
         self.model = convnet('alexnet',weights_path=weights_path, heatmap=True)
         #model = convnet('vgg_16', weights_path="post_vgg16_weights.h5", heatmap=True)
 
