@@ -45,11 +45,13 @@ def predict(config_path, img_path):
             #    img = cv2.resize(cv2.imread(img_path+filename), (64, 64)).astype(np.float32)
             #    fcn.predict(img)
         print(im_list[:])
+        #im = preprocess_image_batch(im_list[:], color_mode="bgr")
         im = preprocess_image_batch(im_list[:], color_mode="rgb")
+
         fcn.predict(im, out_list[:])
 
 
 if __name__ == "__main__":
-    config_path = 'configs/p50_alex_setup_organs_small.json'
-    #train(config_path)
+    config_path = 'configs/p50_alex_organs.json'
+    train(config_path)
     predict(config_path, '../input/')

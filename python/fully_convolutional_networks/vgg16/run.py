@@ -34,6 +34,7 @@ def predict(config_path, img_path):
     batch_num = int(120/batch_val)
 
     for batch in range(batch_num):
+        print("Batch number: {}".format(batch))
         im_list = []
         out_list = []
         for filename in os.listdir(img_path)[batch*batch_val:batch*batch_val+batch_val]:

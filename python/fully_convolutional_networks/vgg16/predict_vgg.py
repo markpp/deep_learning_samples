@@ -12,7 +12,7 @@ class fcn_vgg:
         print("loading vgg weights from: {}".format(weights_path))
         self.model = convnet('vgg_16',weights_path=weights_path, heatmap=True)
         #model = convnet('vgg_16', weights_path="post_vgg16_weights.h5", heatmap=True)
-
+        print("compiling model..")
         self.model.compile(optimizer=sgd, loss='mse')
 
 

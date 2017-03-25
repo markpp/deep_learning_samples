@@ -27,10 +27,10 @@ def load_model(config):
     # Uncomment below to set the first 10 layers to non-trainable (weights will not be updated)
     print("Number of Layers: {}".format(len(model.layers)))
     for idx, layer in enumerate(model.layers):
-        if idx < 28:
+        if idx < 29:
             layer.trainable = False
         else:
-            print("Layer {} - {} is trainable".format(idx, layer.get_config))
+            print("Layer {} is trainable".format(idx))
             print("input shape {}".format(layer.input_shape))
             print("output shape {}".format(layer.output_shape))
 
@@ -48,8 +48,8 @@ def train(config_path):
     # prepare data augmentation configuration
     train_datagen = ImageDataGenerator(
         rescale=1./255,
-        shear_range=0.2,
-        zoom_range=0.2,
+        shear_range=0.4,
+        zoom_range=0.4,
         horizontal_flip=True)
 
     test_datagen = ImageDataGenerator(rescale=1./255)
@@ -88,4 +88,4 @@ def train(config_path):
 
 
 if __name__ == '__main__':
-    train('configs/p50_alex_setup_organs_small.json')
+    train('configs/p50_alex_organs.json')
