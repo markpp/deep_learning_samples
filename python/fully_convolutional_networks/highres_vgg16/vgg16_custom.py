@@ -1,3 +1,14 @@
+import os
+import json
+import numpy as np
+
+with open("configs/mac_vgg16_organs.json") as config_file:
+    json_config = json.load(config_file)
+if json_config['gpu'] == 1:
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
+else:
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cpu,floatX=float32"
+
 from keras.applications.vgg16 import VGG16
 from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
@@ -23,10 +34,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
-import os
-import json
-
-import numpy as np
 
 def predict(config):
     # load json and create model
@@ -157,7 +164,7 @@ def load_custom_vgg16(config):
     return my_model
 
 if __name__ == '__main__':
-    config_file = 'p50_vgg16_organs.json'
+    config_file = 'configs/mac_vgg16_organs.json'
     config = json.load(open(config_file))
 
     #train(config, load_custom_vgg16(config))
