@@ -30,14 +30,15 @@ def predict(config_path, img_path):
 
     fcn = fcn_vgg(config['output_weight_path'])
 
-    batch_val = 6
-    batch_num = int(120/batch_val)
+    batch_size = 1  # 6
+    test_sample = 2  # 120
+    batch_num = int(test_sample/batch_size)
 
     for batch in range(batch_num):
         print("Batch number: {}".format(batch))
         im_list = []
         out_list = []
-        for filename in os.listdir(img_path)[batch*batch_val:batch*batch_val+batch_val]:
+        for filename in os.listdir(img_path)[batch*batch_size:batch*batch_size+batch_size]:
             #name, file_extension = filename[:].split('.')
             im_list.append('../input/'+ filename[:])
             out_list.append('../output/'+ filename[:].split('.')[0])
@@ -51,6 +52,6 @@ def predict(config_path, img_path):
 
 
 if __name__ == "__main__":
-    config_path = 'configs/p50_vgg_organs.json'
+    config_path = 'configs/mac_vgg16_organs.json'
     #train(config_path)
     predict(config_path, '../input/')

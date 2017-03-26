@@ -1,6 +1,14 @@
 import os
 import cv2
 import json
+
+with open("configs/mac_alex_organs.json") as config_file:
+    json_config = json.load(config_file)
+if json_config['gpu'] == 1:
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
+else:
+    os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cpu,floatX=float32"
+
 import numpy as np
 import finetune_alex
 from predict_alex import fcn_alex
@@ -52,6 +60,6 @@ def predict(config_path, img_path):
 
 
 if __name__ == "__main__":
-    config_path = 'configs/p50_alex_organs.json'
-    train(config_path)
+    config_path = 'configs/mac_alex_organs.json'
+    #train(config_path)
     predict(config_path, '../input/')

@@ -12,8 +12,8 @@ class fcn_alex:
         print("loading alexnet weights from: {}".format(weights_path))
         self.model = convnet('alexnet',weights_path=weights_path, heatmap=True)
         #model = convnet('vgg_16', weights_path="post_vgg16_weights.h5", heatmap=True)
-
-        self.model.compile(optimizer=sgd, loss='mse')
+        print("compiling model..")
+        self.model.compile(optimizer=sgd, loss='categorical_crossentropy')
 
 
     def predict(self, im, out_list):

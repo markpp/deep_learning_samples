@@ -88,4 +88,4 @@ def train(config_path):
 
 
 if __name__ == '__main__':
-    train('configs/p50_vgg_organs.json')
+    train('configs/p50_vgg16_organs.json')
