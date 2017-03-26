@@ -77,8 +77,8 @@ def train(config_path):
         samples_per_epoch=config['n_train_samples'],
         nb_epoch=config['n_epoch'],
         validation_data=validation_generator,
-        nb_val_samples=config['n_validation_samples'],
-        class_weight=class_weights)
+        nb_val_samples=config['n_validation_samples'])
+        #class_weight=class_weights)
 
     model.save_weights(config['output_weight_path'])
 

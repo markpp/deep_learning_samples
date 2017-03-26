@@ -2,7 +2,7 @@ import os
 import cv2
 import json
 
-with open("configs/mac_alex_organs.json") as config_file:
+with open("configs/p50_alex_organs.json") as config_file:
     json_config = json.load(config_file)
 if json_config['gpu'] == 1:
     os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
@@ -53,13 +53,13 @@ def predict(config_path, img_path):
             #    img = cv2.resize(cv2.imread(img_path+filename), (64, 64)).astype(np.float32)
             #    fcn.predict(img)
         print(im_list[:])
-        #im = preprocess_image_batch(im_list[:], color_mode="bgr")
-        im = preprocess_image_batch(im_list[:], color_mode="rgb")
+        im = preprocess_image_batch(im_list[:], color_mode="bgr")
+        #im = preprocess_image_batch(im_list[:], color_mode="rgb")
 
         fcn.predict(im, out_list[:])
 
 
 if __name__ == "__main__":
-    config_path = 'configs/mac_alex_organs.json'
-    #train(config_path)
+    config_path = 'configs/p50_alex_organs.json'
+    train(config_path)
     predict(config_path, '../input/')

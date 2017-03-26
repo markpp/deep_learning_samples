@@ -37,14 +37,14 @@ def predict(config):
     # load weights into new model
     loaded_model.load_weights(config['output_weight_path'])
     print("Loaded model from disk")
-    
+
     #sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
     #loaded_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
-    
+
     new_model = to_heatmap(loaded_model)
 
-    img = image.load_img('../../data/2.png', target_size=(350*2, 150*2))
-    #im = preprocess_image_batch(['examples/3.png'], color_mode="bgr") 
+    img = image.load_img('COLOR_MAP_0_C_A.png', target_size=(350, 150))
+    #im = preprocess_image_batch(['examples/3.png'], color_mode="bgr")
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     #x = preprocess_input(x)
@@ -56,10 +56,10 @@ def predict(config):
     heatmap2 = out[0,2]
     heatmap3 = out[0,3]
 
-    plt.imsave("../../data/heatmap0.png",heatmap0)
-    plt.imsave("../../data/heatmap1.png",heatmap1)
-    plt.imsave("../../data/heatmap2.png",heatmap2)
-    plt.imsave("../../data/heatmap3.png",heatmap3)
+    plt.imsave("heatmap0.png",heatmap0)
+    plt.imsave("heatmap1.png",heatmap1)
+    plt.imsave("heatmap2.png",heatmap2)
+    plt.imsave("heatmap3.png",heatmap3)
 
 
 def train(config, model):
@@ -111,8 +111,8 @@ def load_custom_vgg16(config):
 
     #print("Number of Layers: {}".format(len(model_vgg16_conv.layers)))
     for layer in model_vgg16_conv.layers:
-	layer.trainable = False
-    
+        layer.trainable = False
+
     model_json = model_vgg16_conv.to_json()
     with open('conv.json', "w") as json_file:
         json_file.write(model_json)
@@ -134,17 +134,17 @@ def load_custom_vgg16(config):
     input = model_vgg16_conv.input
 
     output_vgg16_conv = model_vgg16_conv.get_layer("block5_pool").output
-    
-    #Use the generated model 
+
+    #Use the generated model
     #output_vgg16_conv = model_vgg16_conv(input)
 
-    #Add the fully-connected layers 
+    #Add the fully-connected layers
     x = Flatten(name='flatten')(output_vgg16_conv)
     x = Dense(4096/2, activation='relu', name='fc1')(x)
     x = Dense(4096/2, activation='relu', name='fc2')(x)
-    x = Dense(4, activation='softmax', name='predictions')(x)
+    x = Dense(5, activation='softmax', name='predictions')(x)
 
-    #Create your own model 
+    #Create your own model
     my_model = Model(input=input, output=x)
 
     #In the summary, weights and layers from VGG part will be hidden, but they will be fit during the training
@@ -157,10 +157,8 @@ def load_custom_vgg16(config):
     return my_model
 
 if __name__ == '__main__':
-    config_file = '../../config/rog_setup_organs.json'
+    config_file = 'p50_vgg16_organs.json'
     config = json.load(open(config_file))
 
-    train(config, load_custom_vgg16(config))
+    #train(config, load_custom_vgg16(config))
     predict(config)
-
-
