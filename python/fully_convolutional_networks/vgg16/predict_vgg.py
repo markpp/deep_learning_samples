@@ -30,22 +30,26 @@ class fcn_vgg:
         out = self.model.predict(im)
         print(out.shape)
         #print 'predicted label: {}'.format(out[0])
-        padding = 4
+        padding = 2
+        height, width = out[0,0].shape
+
         for idx, file_name in enumerate(out_list):
-            res_mask = np.zeros((37+padding*2, 12+padding*2), np.uint8)
+
+            res_mask = np.zeros((height+padding*2, width+padding*2), np.uint8)
 
             #heatmap0 = cv2.resize(heatmap0, (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR)
-            for row in range(37):
-                for col in range(12):
+            for row in range(height):
+                for col in range(width):
+
                     # Empty, misc, Heart, Liver, Lung
                     val_list = [out[idx,0].item(row,col), out[idx,4].item(row,col), out[idx,1].item(row,col), out[idx,2].item(row,col), out[idx,3].item(row,col)]
                     val_list.index(max(val_list))
                     res_mask.itemset((row+padding,col+padding), (0+val_list.index(max(val_list)))*50)
-            cv2.imwrite(file_name+"_all.png", cv2.resize(res_mask, (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
-            #cv2.imwrite(file_name+"_heart.png", cv2.resize((out[idx,1] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
-            #cv2.imwrite(file_name+"_liver.png", cv2.resize((out[idx,2] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
-            #cv2.imwrite(file_name+"_lung.png", cv2.resize((out[idx,3] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
-            #cv2.imwrite(file_name+"_misc.png", cv2.resize((out[idx,4] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
+            cv2.imwrite(file_name+"_all.png", cv2.resize(res_mask, (self.out_width, self.out_height), interpolation = cv2.INTER_NEAREST))
+            cv2.imwrite(file_name+"_heart.png", cv2.resize((out[idx,1] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
+            cv2.imwrite(file_name+"_liver.png", cv2.resize((out[idx,2] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
+            cv2.imwrite(file_name+"_lung.png", cv2.resize((out[idx,3] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
+            cv2.imwrite(file_name+"_misc.png", cv2.resize((out[idx,4] * 255).astype('uint8'), (self.out_width, self.out_height), interpolation = cv2.INTER_LINEAR))
             '''
             heatmap0 = out[idx,0] * 255 # Heart
             heatmap1 = out[idx,1] * 255 # Liver

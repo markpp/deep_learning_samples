@@ -91,6 +91,9 @@ def train(config, model):
         batch_size=config['batch_size'],
         class_mode='categorical')
 
+    class_weights = {0:1/(config['n_empty']/config['n_train_samples']), 1:1/(config['n_heart']/config['n_train_samples']), 2:1/(config['n_liver']/config['n_train_samples']), 3:1/(config['n_lung']/config['n_train_samples']), 4:1/(config['n_misc']/config['n_train_samples'])}
+    print("class_weights: empty : heart : liver : lung : misc")
+    print(class_weights)
     # fine-tune the model
     model.fit_generator(
         train_generator,
@@ -98,6 +101,7 @@ def train(config, model):
         nb_epoch=config['n_epoch'],
         validation_data=validation_generator,
         nb_val_samples=config['n_validation_samples'])
+        #class_weight=class_weights)
 
     model.save_weights(config['output_weight_path'])
 
@@ -147,8 +151,8 @@ def load_custom_vgg16(config):
 
     #Add the fully-connected layers
     x = Flatten(name='flatten')(output_vgg16_conv)
-    x = Dense(4096/2, activation='relu', name='fc1')(x)
-    x = Dense(4096/2, activation='relu', name='fc2')(x)
+    x = Dense(4096, activation='relu', name='fc1')(x)
+    x = Dense(4096, activation='relu', name='fc2')(x)
     x = Dense(5, activation='softmax', name='predictions')(x)
 
     #Create your own model
@@ -157,7 +161,7 @@ def load_custom_vgg16(config):
     #In the summary, weights and layers from VGG part will be hidden, but they will be fit during the training
     my_model.summary()
 
-    sgd = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
+    sgd = SGD(lr=1e-3, decay=1e-4, momentum=0.9, nesterov=True)
     my_model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
 
     #Then training with your data !
@@ -167,5 +171,5 @@ if __name__ == '__main__':
     config_file = 'configs/mac_vgg16_organs.json'
     config = json.load(open(config_file))
 
-    #train(config, load_custom_vgg16(config))
+    train(config, load_custom_vgg16(config))
     predict(config)

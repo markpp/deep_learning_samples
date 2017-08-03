@@ -69,7 +69,7 @@ def train(config_path):
     #KerasIntegration('markpp/test1', 'f7560908f0a18d5aa14c0583bc1a2f89', model, insights = True )
 
     class_weights = {0:1/(config['n_empty']/config['n_train_samples']), 1:1/(config['n_heart']/config['n_train_samples']), 2:1/(config['n_liver']/config['n_train_samples']), 3:1/(config['n_lung']/config['n_train_samples']), 4:1/(config['n_misc']/config['n_train_samples'])}
-    print("class_weights: heart : liver : lung : misc : empty")
+    print("class_weights: empty : heart : liver : lung : misc")
     print(class_weights)
     # fine-tune the model
     model.fit_generator(

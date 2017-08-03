@@ -30,8 +30,8 @@ def predict(config_path, img_path):
 
     fcn = fcn_vgg(config['output_weight_path'])
 
-    batch_size = 1  # 6
-    test_sample = 2  # 120
+    batch_size = 6  # 6
+    test_sample = 120  # 120
     batch_num = int(test_sample/batch_size)
 
     for batch in range(batch_num):
@@ -52,6 +52,6 @@ def predict(config_path, img_path):
 
 
 if __name__ == "__main__":
-    config_path = 'configs/mac_vgg16_organs.json'
+    config_path = 'configs/p50_vgg16_organs.json'
     #train(config_path)
     predict(config_path, '../input/')
